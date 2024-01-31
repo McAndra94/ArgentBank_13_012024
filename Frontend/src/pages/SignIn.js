@@ -7,6 +7,7 @@ import { login, fetchUserProfile } from "../apiServices";
 function SignIn() {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
+	const [rememberMe, setRememberMe] = useState(false);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -15,12 +16,14 @@ function SignIn() {
 
 		try {
 			const response = await login(username, password);
-			console.log("Full response: ", response);
-			console.log("Response data:", response.data);
 			const authToken = response.data.body?.token;
 
 			if (authToken && authToken.split(".").length === 3) {
-				localStorage.setItem("authToken", authToken); // Store token
+				if (rememberMe) {
+					localStorage.setItem("authToken", authToken);
+				} else {
+					sessionStorage.setItem("authToken", authToken);
+				}
 
 				const userResponse = await fetchUserProfile(authToken);
 				const userProfile = userResponse.body;
@@ -61,7 +64,12 @@ function SignIn() {
 						/>
 					</div>
 					<div className="input-remember">
-						<input type="checkbox" id="remember-me" />
+						<input
+							type="checkbox"
+							id="remember-me"
+							checked={rememberMe}
+							onChange={(e) => setRememberMe(e.target.checked)}
+						/>
 						<label htmlFor="remember-me">Remember me</label>
 					</div>
 
