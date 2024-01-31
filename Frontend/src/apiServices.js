@@ -21,8 +21,8 @@ export const fetchUserProfile = (authToken) => {
 			}
 		)
 		.then((response) => {
-			console.log("User Profile Response:", response.data); // Log for debugging
-			return response.data; // Return the entire data object
+			console.log("User Profile Response:", response.data); 
+			return response.data; 
 		});
 };
 

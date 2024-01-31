@@ -49,7 +49,7 @@ function User() {
 							)}
 						</>
 					) : (
-						"Guest Preview"
+						"Guest"
 					)}
 				</h1>
 			</div>
