@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signIn } from "../redux/authSlice";
-import { login, fetchUserProfile } from "../apiServices";
+import { loginApi, fetchUserProfile } from "../apiServices";
 
 function SignIn() {
 	const [username, setUsername] = useState("");
@@ -13,20 +13,23 @@ function SignIn() {
 
 	const handleSignIn = async () => {
 		console.log("Sign In clicked");
-
 		try {
-			const response = await login(username, password);
-			const authToken = response.data.body?.token;
+			const response = await loginApi(username, password);
+			console.log("Login API Response:", response);
+			const authToken = response.data.body.token;
+			console.log("authToken Response:", authToken);
 
+			// Check that token follows the 3x . JWT structure
 			if (authToken && authToken.split(".").length === 3) {
 				if (rememberMe) {
+					console.log("Received authToken:", authToken);
 					localStorage.setItem("authToken", authToken);
 				} else {
 					sessionStorage.setItem("authToken", authToken);
 				}
 
 				const userResponse = await fetchUserProfile(authToken);
-				const userProfile = userResponse.body;
+				const userProfile = userResponse.data.body;
 
 				dispatch(signIn({ token: authToken, user: userProfile }));
 				navigate("/profile");

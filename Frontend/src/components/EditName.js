@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { updateUserProfile } from "../apiServices";
+import { updateUserProfileApi } from "../apiServices";
 import "../styles/EditName.css";
 
 const EditNameForm = ({ user, onSave, onCancel }) => {
@@ -7,8 +7,10 @@ const EditNameForm = ({ user, onSave, onCancel }) => {
 	const [lastName, setLastName] = useState(user.lastName);
 
 	const handleSave = () => {
-		const token = localStorage.getItem("authToken");
-		updateUserProfile({ firstName, lastName }, token)
+		const token =
+			localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
+		console.log("token: ", token);
+		updateUserProfileApi({ firstName, lastName }, token)
 			.then((response) => {
 				console.log("Success:", response.data);
 				onSave({ firstName, lastName });

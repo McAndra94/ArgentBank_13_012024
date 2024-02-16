@@ -6,6 +6,7 @@ import logo from "../images/argentBankLogo.png";
 function NavBar() {
 	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 	const user = useSelector((state) => state.auth.user);
+	console.log("user: ", user);
 	const dispatch = useDispatch();
 	const handleSignOut = () => {
 		localStorage.clear();
@@ -33,7 +34,7 @@ function NavBar() {
 						<>
 							<Link to="/profile" className="main-nav-item">
 								<i className="fa fa-user-circle"></i>
-								{user && `${user.firstName}`}
+								{user?.firstName || "User"}
 							</Link>
 
 							<Link to="/" onClick={handleSignOut} className="main-nav-item">

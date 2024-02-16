@@ -9,14 +9,17 @@ function User() {
 	console.log("User in User.js:", user);
 	const dispatch = useDispatch();
 	const [editing, setEditing] = useState(false);
+	const [editableUser, setEditableUser] = useState(user);
 
 	const handleEditClick = () => {
 		setEditing(true);
 	};
 
-	const handleSaveName = (firstName, lastName) => {
-		console.log("Saving new name:", firstName, lastName);
-		dispatch(updateUserProfile(firstName, lastName));
+	const handleSaveName = (updatedUserData) => {
+		console.log("Before dispatch:", updatedUserData);
+		dispatch(updateUserProfile(updatedUserData));
+		console.log("updateUserProfile", updateUserProfile);
+		setEditableUser(updatedUserData);
 		setEditing(false);
 	};
 
@@ -33,13 +36,13 @@ function User() {
 						<>
 							{editing ? (
 								<EditName
-									user={user}
+									user={editableUser}
 									onSave={handleSaveName}
 									onCancel={handleCancelEdit}
 								/>
 							) : (
 								<>
-									{`${user.firstName} ${user.lastName}`}
+									{`${editableUser.firstName} ${editableUser.lastName}`}
 									<div>
 										<button className="edit-button" onClick={handleEditClick}>
 											Edit Name
